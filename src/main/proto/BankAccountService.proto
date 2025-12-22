@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+option java_package = "com.financial.banking.grpc.stubs";
+option java_multiple_files = true;
+
+// Account Type Enumeration
+enum AccountCategory {
+    CHECKING = 0;
+    SAVINGS = 1;
+}
+
+// Bank Account Message
+message BankAccount {
+    string accountId = 1;
+    double balance = 2;
+    string createdAt = 3;
+    AccountCategory category = 4;
+}
+
+// Request Message for Account Creation
+message CreateAccountRequest {
+    double initialBalance = 1;
+    string timestamp = 2;
+    AccountCategory category = 3;
+}
+
+// Balance Statistics Message
+message BalanceStatistics {
+    int32 totalAccounts = 1;
+    double totalBalance = 2;
+    double averageBalance = 3;
+}
+
+// Request/Response Messages
+
+message ListAllAccountsRequest {}
+
+message ListAllAccountsResponse {
+    repeated BankAccount accounts = 1;
+}
+
+message FindAccountRequest {
+    string accountId = 1;
+}
+
+message FindAccountResponse {
+    BankAccount account = 1;
+}
+
+message GetBalanceStatsRequest {}
+
+message GetBalanceStatsResponse {
+    BalanceStatistics statistics = 1;
+}
+
+message CreateAccountResponse {
+    BankAccount account = 1;
+}
+
+// Service Definition for Bank Account Operations
+service BankAccountService {
+    // List all bank accounts
+    rpc ListAllAccounts(ListAllAccountsRequest) returns (ListAllAccountsResponse);
+    
+    // Find account by ID
+    rpc FindAccountById(FindAccountRequest) returns (FindAccountResponse);
+    
+    // Get balance statistics
+    rpc GetBalanceStatistics(GetBalanceStatsRequest) returns (GetBalanceStatsResponse);
+    
+    // Create new account
+    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+}
